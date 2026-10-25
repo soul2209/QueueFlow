@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QueueFlow — Smart Virtual Queue</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="app-header">
+  <div class="brand"><h1>QueueFlow <span style="color:var(--accent)">.</span></h1><p>Smart virtual queue &amp; token management</p></div>
+  <div class="metrics">
+    <div class="metric"><strong id="waitingMetric">0</strong><span>WAITING</span></div>
+    <div class="metric"><strong id="servedMetric">0</strong><span>SERVED</span></div>
+    <div class="metric"><strong id="counterMetric">0/0</strong><span>COUNTERS BUSY</span></div>
+  </div>
+</header>
+<div class="layout">
+  <nav class="sidebar" aria-label="Main navigation">
+    <button class="nav-btn active" data-page="customer">◉ &nbsp; Customer</button>
+    <button class="nav-btn" data-page="staff">▣ &nbsp; Staff desk</button>
+    <button class="nav-btn" data-page="admin">⚙ &nbsp; Admin</button>
+  </nav>
+  <main class="page-host">
+    <section class="panel page active" id="customer">
+      <h2>Get a token</h2><p class="sub">Pick a service and join the virtual line.</p>
+      <label for="custService">SERVICE</label><select id="custService"></select>
+      <label for="custName">YOUR NAME</label><input id="custName" maxlength="70" placeholder="Enter your name">
+      <label>PRIORITY</label><div class="priority" id="priorityButtons">
+        <button class="btn selected" data-priority="NORMAL">Normal</button><button class="btn amber" data-priority="SENIOR">Senior</button><button class="btn red" data-priority="EMERGENCY">Emergency</button>
+      </div>
+      <div class="space"></div><button class="btn full" id="issueBtn">＋ &nbsp; Get token</button>
+      <label for="tokenLookup">HAVE A TOKEN?</label><input id="tokenLookup" placeholder="e.g. B-001">
+      <div class="row" style="margin-top:9px"><button class="btn outline" id="checkBtn">Check status</button><button class="btn red" id="cancelBtn">Cancel token</button></div>
+      <div class="ticket" id="ticket" aria-live="polite">Your token details will appear here.</div>
+    </section>
+    <section class="panel page" id="staff">
+      <h2>Staff desk</h2><p class="sub">Call, complete or skip customers at a counter.</p>
+      <label for="staffCounter">COUNTER</label><select id="staffCounter"></select>
+      <div class="now-card"><div class="eyebrow">NOW SERVING</div><div class="now-token" id="nowToken">—</div><div class="muted" id="nowInfo">No counter selected</div></div>
+      <div class="actions"><button class="btn" id="callBtn">Call next</button><div class="row"><button class="btn green" id="completeBtn">Complete</button><button class="btn amber" id="skipBtn">Skip (no-show)</button></div></div>
+      <p class="sub" style="margin-top:18px;margin-bottom:0">Tip: click a counter card on the right to select it.</p>
+    </section>
+    <section class="panel page" id="admin">
+      <h2>Admin</h2><p class="sub">Add services and counters, and view statistics.</p>
+      <label for="newServiceName">NEW SERVICE NAME</label><input id="newServiceName" placeholder="e.g. Payments">
+      <label for="newServicePrefix">TOKEN PREFIX (e.g. P)</label><input id="newServicePrefix" maxlength="4" placeholder="P">
+      <button class="btn full" id="addServiceBtn" style="margin-top:12px">＋ Add service</button>
+      <label for="adminService">OPEN A COUNTER FOR</label><select id="adminService"></select>
+      <button class="btn outline full" id="addCounterBtn" style="margin-top:9px">＋ Add counter</button>
+      <label>STATISTICS</label><div class="admin-stats" id="statsArea"></div>
+      <button class="btn outline full" id="downloadLogBtn" style="margin-top:9px">⇩ Download log (CSV)</button>
+    </section>
+  </main>
+  <div class="right-col">
+    <section class="panel">
+      <div class="section-head"><h2>Live queue</h2><select id="boardService" aria-label="Filter queue by service"></select></div>
+      <div class="table-wrap"><table><thead><tr><th>#</th><th>Token</th><th>Customer</th><th>Priority</th></tr></thead><tbody id="queueBody"></tbody></table><div class="empty" id="emptyQueue">Queue is empty</div></div>
+    </section>
+    <section class="panel">
+      <div class="section-head"><h2>Counters</h2><span class="pill" id="counterCount">0 total</span></div>
+      <div class="counter-grid" id="countersPanel"></div>
+      <div class="empty" id="emptyCounters" style="display:none">No counters yet. Add one in Admin.</div>
+    </section>
+  </div>
+</div>
+<footer class="statusbar"><span class="dot" id="statusDot"></span><span id="statusText">Ready.</span></footer>
+<script src="script.js"></script>
+</body>
+</html>
